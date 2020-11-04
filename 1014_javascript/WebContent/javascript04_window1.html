@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style type="text/css">
+#register {
+	border: 2px solid blue;
+	background-color: skyblue;
+	position: absolute;			/* absolute로 지정되어야 top, left속성이 제대로 적용된다. */
+	top: 200px;
+	left: 500px;
+	display: none;				/* id속성이 register인 요소를 화면에 표시하지 않는다. */
+}
+</style>
+<script type="text/javascript">
+	function openWin() {
+//		window.open('url', 'title', 'option')
+//		window.open();	// 아무내용이 없는 빈 윈도우 실행
+		var url = './javascript04_window2.html';	// 팝업창의 url
+		var title = '자식 윈도우';					// 윈도우 이름
+		var option = 'top=100, left=100, width=500, height=500px';
+		window.open(url, title, option);
+	}
+	function registerForm() {
+		//감춰 놓은 register를 보이게 한다.
+		document.getElementById('register').style.display = 'block';
+		//윈도우의 배경색을 변경한다.
+		document.body.style.background = 'gray';
+		//회원가입 버튼을 비활성화 시킨다. 
+		//document.getElementsByName('btn1')[0].disabled = 'disabled'; // name 속성이 btn1인 버튼이 1개일때
+
+//name 속성이 btn1인 버튼이 여러개 일 때
+		var btns = document.getElementsByName('btn1');
+	//일반 for
+		//for (var i = 0; i < btns.length; i++) {
+		//	btns[i].disabled = 'disabled';
+		//}
+	//향상된 for
+		//for (var i in btns) {		// 변수 i에 btns 배열의 인덱스가 전달되면서 반복한다.
+		//	btns[i].dsiabled = 'disabled';
+		//}
+		for (var btn of btns) {		// 변수 btn에 btns 배열의 요소가 전달되면서 반복한다.
+			btn.disabled = 'disabled';
+		}
+	}
+	function idChk(){
+		alert('아이디 중복체크를 해주세요.');
+	}
+	function openPop() {
+		var url = './javascript04_window3.html';
+		var title = '아이디 중복 검사';
+		var option = 'top=300, left=600, width=500, height=500px';
+		window.open(url, title, option);
+	}
+	function closeWin() {
+		document.getElementById('register').style.display = 'none';
+		document.body.style.background = 'white';
+		var btns = document.getElementsByName('btn1');
+		for (var btn of btns) {		// 변수 btn에 btns 배열의 요소가 전달되면서 반복한다.
+			btn.disabled = '';
+		}
+		document.getElementById('parentID').value = document.getElementsByName('id')[0].value;
+		
+	}
+</script>
+<body>
+
+<div>
+	<input id="parentID" type="text" name="name" placeholder="이름을 입력하세요."/>
+	<h1>팝업창 만들기 - 새창</h1>
+	<input type="button" name="btn" value="창열기" onclick="openWin()"><br/>
+	<input id="name" type="text" name="name1" placeholder="name1"/>
+	<input type="text" name="name2" placeholder="name2"/>
+	<h1>졸리다.''ㅜㅜ''.</h1>
+	<hr/>
+	<h1>회원가입 - 현재창</h1>
+	<input type="button" value="회원가입" name="btn1" onclick="registerForm()" >
+</div>
+<div  id="register"> 
+	<form action="?">
+		<table>
+			<tr>
+				<td>
+					<input type="text" name="id" readonly="readonly" onclick="idChk()"  placeholder="아이디"/>
+					<input type="button" value="중복체크" onclick="openPop()"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="password" name="pw" placeholder="비밀번호">
+				</td>  
+			</tr> 
+			<tr>
+				<td colspan="2">
+					<input type="button" value="확인" onclick="closeWin()"/>
+				</td>
+			</tr>		  
+		</table>
+	</form>
+</div>
+
+
+</body>
+</html>

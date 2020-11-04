@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+    function evalTest() {
+        var obj = document.getElementsByName('evalue')[0];
+        console.log(obj);
+        console.log(obj.value);
+        console.log(typeof obj.value);
+
+        if (confirm('연산식을 올바르게 입력했나요?\n입력한 연산식: ' + obj.value)){
+            // alert('계산을 시작합니다.');
+            //eval('alert("계산을 시작합니다.")');
+            document.getElementsByTagName('span')[0].innerHTML ='<h2>계산결과 => ' + eval(obj.value) + '</h2>';    
+        } else {
+            obj.value = '';
+            obj.focus();
+        }
+    }
+    function calcuTest() {
+        var docs = document.querySelectorAll('.a'); // 같은 클래스이름의 밸류들을 모두 얻어온다.
+        var str ='';
+        for (var doc of docs) {
+            console.log(doc.value);
+            str += doc.value; // 얻어온 밸류를 반복문을 통해 한 변수(str)에 담는다.
+        }
+        console.log(str);
+        document.getElementsByTagName('span')[1].innerHTML ='<h2>계산결과 => ' + eval(str) + '</h2>';   // eval로 계산하고 현재 문서.배열 첫 번째 span tag에 =이하의 것을 입력해서 html에서 출력한다.
+    }
+</script>
+</head>
+<body>
+
+    <h2>문자열로 된 코드를 읽어 자바스크립트로 실행하기</h2>
+    <input type="text" name="evalue" placeholder="예) 5 + 10"/>
+    <input type="button" value="계산하기" onclick="evalTest()"/><br/>
+    <span></span>
+    <hr/>
+    
+    <input class="a" type="number" placeholder="숫자" />
+    <input class="a" type="text" list="calcuList" placeholder="연산식"/>
+    <input class="a" type="number" placeholder="숫자">
+    <input type="button" value="계산하기" onclick="calcuTest()"/><br/>
+    <span></span>
+
+    <datalist id="calcuList">
+        <option value="+"/>
+        <option >-</option>
+        <option >*</option>
+        <option >/</option>
+    </datalist>
+
+
+
+
+</body>
+</html>
