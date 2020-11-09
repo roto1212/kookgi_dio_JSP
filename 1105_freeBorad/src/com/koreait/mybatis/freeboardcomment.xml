@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- DOCTYPE이 mapper인 xml 파일은 실행할 sql 명령을 입력한다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.vo.FreeboardCommentVO">
+
+	<!-- id : sql 명령을 식별한다. -->
+	<!-- parameterType : sql 명령으로 전달되는 데이터의 타입을 적는다. -->
+	<!-- resultType : sql 명령 실행결과 리턴되는 데이터의 타입을 적는다. -->
+	<!-- 
+		ibatis는  parameterClass로 지정된 객체 형태로 sql 명령으로 넘어온 데이터를 #~#사이에 코딩했지만 
+		mybatis는 parameterType으로 지정된 객체 형태로 sql 명령으로 넘어온 데이터를 #{~}사이에 코딩한다.
+		nextval => 시퀀스를 증가시키니다. currval => 현재 시퀀스 값을 의미한다.
+	-->
+
+	<!-- 댓글 1건을 저장한다. -->
+	<insert id="insertComment" parameterType="commentVO">
+		insert into freeboardcomment (idx, ref, name, pw, content, ip) 
+		values (freeboardcomment_idx_seq.nextval, #{ref}, #{name}, #{pw}, #{content}, #{ip}) 
+	</insert> 
+	<!-- 댓글 개수를 얻어온다. -->
+	<select id="commentCount" parameterType="int" resultType="int">
+		select count(*) from freeboardcomment where ref = #{idx}
+	</select>
+	<!-- 댓글 목록을 얻어온다. -->
+	<select id="selectCommentList" parameterType="int" resultType="commentVO">
+		select * from freeboardcomment where ref = #{idx} order by idx desc
+	</select>
+	<!-- 댓글 1건을 얻어온다. -->
+	<select id="selectCommentByIdx" parameterType="int" resultType="commentVO">
+		select * from freeboardcomment where idx = #{idx}
+	</select>
+	<!-- 댓글 1건을 지운다. -->
+	<delete id="deleteComment" parameterType="int" >
+		delete from freeboardcomment where idx = #{idx}
+	</delete>
+	
+	<!-- 댓글 1건을 수정한다. -->
+	<update id="updateComment" parameterType="commentVO">
+		update freeboardcomment set content = #{content} where idx = #{idx}
+	</update>
+	
+</mapper>
+
+
+	
+
+
+
+
+
+
+
+

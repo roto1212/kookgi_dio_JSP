@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- DOCTYPE이 mapper인 xml 파일은 실행할 sql 명령을 입력한다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.vo.FreeboardVO">
+
+	<!-- id : sql 명령을 식별한다. -->
+	<!-- parameterType : sql 명령으로 전달되는 데이터의 타입을 적는다. -->
+	<!-- resultType : sql 명령 실행결과 리턴되는 데이터의 타입을 적는다. -->
+	
+	<!-- 
+		ibatis는  parameterClass로 지정된 객체 형태로 sql 명령으로 넘어온 데이터를 #~#사이에 코딩했지만 
+		mybatis는 parameterType으로 지정된 객체 형태로 sql 명령으로 넘어온 데이터를 #{~}사이에 코딩한다.
+		nextval => 시퀀스를 증가시킨다. currval => 현재 시퀀스 값을 의미한다.
+	-->
+	<!-- 글을 저장한다. -->
+	<insert id="insert" parameterType="vo">
+		insert into freeboard (idx, name, pw, subject, content, ip, notice)
+		values(freeboard_idx_seq.nextval, #{name}, #{pw}, #{subject}, #{content}, #{ip}, #{notice})
+	</insert>
+	<!-- 일반글의 개수를 얻어온다. -->
+	<select id="selectCount" resultType="int">
+		select count(*) from freeboard
+	</select> 
+	<!-- 1페이지 분량의 글목록을 얻어온다. -->
+	<select id="selectList" parameterType="java.util.HashMap" resultType="vo">
+		<![CDATA[
+			select * from(
+				select rownum rnum, TT.* from (
+					select * from freeboard order by idx desc
+				) TT where rownum <= #{endNo}	
+			) where rnum >= #{startNo}
+		]]> 
+	</select>
+	<!-- 조회수를 증가시킬 글번호를 넘겨받고 조회수를 1증가 시킨다. -->
+	<update id="increment" parameterType="int">
+		update freeboard set hit = hit + 1 where idx = #{idx}
+	</update> 
+	<!--  메인글 한 건을 얻어온다. -->
+	<select id="selectByIdx" parameterType="int" resultType="vo">
+		select * from freeboard where idx = #{idx}
+	</select>
+	<!-- 메인글 한 건을 삭제한다. -->
+	<delete id="delete" parameterType="int">
+		delete from freeboard where idx = #{idx}
+	</delete>
+	<!-- 메인글 한 건을 수정한다. -->
+	<update id="update" parameterType="vo">
+		update freeboard set notice = #{notice}, subject = #{subject}, content=#{content} where idx = #{idx}
+	</update>
+	<!-- 공지글 전체를 얻어온다. -->
+	<select id="selectNotice" resultType="vo">
+		select * from freeboard where notice = 'notice' order by idx desc
+	</select> 
+</mapper>
+
+
+	
+
+
+
+
+
+
+
+
